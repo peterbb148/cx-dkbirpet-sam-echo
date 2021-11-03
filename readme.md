@@ -3,7 +3,7 @@
 ## Create virtual Python environment
 
 ```
-pipenv --python /usr/local/opt/python@3.8/bin/python3
+pipenv --python /usr/local/opt/python@3.9/bin/python3
 ```
 
 and to start environment run:
@@ -59,6 +59,7 @@ Use scan to return all items
 ```
 aws dynamodb scan --table-name dkbirpet --endpoint-url http://localhost:8000
 ```
-
+Use query to find a specific item (yes, still need to figure this out on the command line :anguished:)
 ```
 aws dynamodb query --table-name dkbirpet  --endpoint-url http://localhost:8000
+```
