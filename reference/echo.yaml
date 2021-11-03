@@ -1,0 +1,85 @@
+openapi: 3.1.0
+info:
+  title: echo
+  version: '1.0'
+  description: API to handle echos.
+  summary: API to handle echos.
+  contact:
+    name: Peter Birkholm-Buch
+    email: peterbb@gmail.com
+  license:
+    name: Free for all
+    identifier: Beerware
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /echo:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/echo'
+      operationId: get-echo
+      description: Get all echo messages
+    post:
+      summary: ''
+      operationId: post-echo
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/echo'
+      description: Create a new echo message
+  '/echo/{id}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/echo'
+        '':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/echo'
+      operationId: get-echo
+      description: Get specific echo message
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    delete:
+      summary: ''
+      operationId: delete-echo-id
+      responses:
+        '200':
+          description: OK
+      description: Delete specific echo message
+components:
+  schemas:
+    echo:
+      title: echo
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+      required:
+        - message
