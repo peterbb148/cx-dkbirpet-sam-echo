@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   cx-dkbirpet-sam-echo
 
-  Sample SAM Template for cx-dkbirpet-sam-echo
+  The echo API
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -11,31 +11,41 @@ Globals:
     Timeout: 3
 
 Resources:
-  HelloWorldFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
     Properties:
-      CodeUri: hello_world/
-      Handler: app.lambda_handler
+      StageName: Dev
+  LambdaEchoSam:
+    Type: 'AWS::Serverless::Function'
+    Properties:
       Runtime: python3.9
-      Architectures:
-        - x86_64
+      Handler: app.handler
+      CodeUri: ./src
       Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+        PostEcho:
+          Type: Api
           Properties:
-            Path: /hello
+            Path: /echo
+            Method: post
+        GetEcho:
+          Type: Api
+          Properties:
+            Path: /echo
             Method: get
-
+        GetEchos:
+          Type: Api
+          Properties:
+            Path: /echo/{id}
+            Method: get
+        DeleteEcho:
+          Type: Api
+          Properties:
+            Path: /echo/{id}
+            Method: delete
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+    Lambdaechosamapi:
+      Description: "API Gateway URL"
+      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev/echo"
+    Function:
+      Description: "LambdaEchoSam Arn"
+      Value: !GetAtt LambdaEchoSam.Arn

@@ -1,42 +1,109 @@
 import json
+import uuid
+import boto3
+from boto3.dynamodb.conditions import Key
+from botocore.exceptions import ClientError
 
-# import requests
+def get_item(event):
 
+    #dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000')
+    dynamodb = boto3.resource('dynamodb')
+    
+    table = dynamodb.Table('dkbirpet')      
 
-def lambda_handler(event, context):
-    """Sample pure Lambda function
+    try:
+        response = table.query(
+            KeyConditionExpression=Key('id').eq(event['pathParameters']['id'])
+        )
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        return response['Items']
 
-    Parameters
-    ----------
-    event: dict, required
-        API Gateway Lambda Proxy Input Format
+def get_items(event):
 
-        Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
+    #client = boto3.client('dynamodb', endpoint_url='http://localhost:8000')
+    client = boto3.client('dynamodb')
+    table_name = 'dkbirpet'
 
-    context: object, required
-        Lambda Context runtime methods and attributes
+    results = []
+    last_evaluated_key = None
+    while True:
+        if last_evaluated_key:
+            response = client.scan(
+                TableName=table_name,
+                ExclusiveStartKey=last_evaluated_key
+            )
+        else: 
+            response = client.scan(TableName=table_name)
+        last_evaluated_key = response.get('LastEvaluatedKey')
+        
+        results.extend(response['Items'])
+        
+        if not last_evaluated_key:
+            break
+    return results
 
-        Context doc: https://docs.aws.amazon.com/lambda/latest/dg/python-context-object.html
+def create_item(event, dynamodb=None):
 
-    Returns
-    ------
-    API Gateway Lambda Proxy Output Format: dict
+    if not dynamodb:
+        #dynamodb = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
+        dynamodb = boto3.resource('dynamodb')
 
-        Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
-    """
+    table = dynamodb.Table('dkbirpet')
 
     # try:
-    #     ip = requests.get("http://checkip.amazonaws.com/")
-    # except requests.RequestException as e:
-    #     # Send some context about this error to Lambda Logs
-    #     print(e)
 
-    #     raise e
+    id = uuid.uuid4().hex
+    response = table.put_item(
+    Item={
+            'id': id,
+            'message': event['body']['message']
+            }
+    )
+    # except ClientError as e:
+    #     print(e.response['Error']['Message'])
+    return id
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps({
-            "message": "hello world",
-            # "location": ip.text.replace("\n", "")
-        }),
+def delete_item(event):
+
+        #dynamodb = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
+        dynamodb = boto3.resource('dynamodb')
+        
+        table = dynamodb.Table('dkbirpet')
+        item = get_item(id)
+        response = table.delete_item(
+            Key={
+                'id': event['body']['id'],
+                'message': event['body']['message']
+            }
+        )
+        return response
+
+# map the inputs to the functions
+options = {'GET' : get_item,
+           'GETS' : get_items,
+           'POST' : create_item,
+           'DELETE' : delete_item,
+}
+
+def handler(event, context):
+
+    method = event['httpMethod']
+    if method == "GET" and event['path'] == "/echo":
+        method = 'GETS'
+    elif method == "GET" and event['pathParameters']['id'] != "":
+        method = 'GET'
+    if method == 'POST':
+        print(event)
+
+    print("Method:" + method)
+    body = {
+        "result": options[method](event)
     }
+    response = {
+        "statusCode": 200,
+        'body': json.dumps(body)
+    }
+
+    return response
