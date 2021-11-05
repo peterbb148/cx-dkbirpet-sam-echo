@@ -12,87 +12,69 @@ paths:
   /echo:
     get:
       responses:
-        "200":
-          description: "200 response"
+        '200':
+          description: 200 response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empty"
+                $ref: '#/components/schemas/Empty'
       x-amazon-apigateway-integration:
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri: "${function_arn}"
+        type: aws_proxy
+        httpMethod: POST
+        uri: '${function_arn}'
         responses:
           default:
-            statusCode: "200"
-        passthroughBehavior: "when_no_match"
-        contentHandling: "CONVERT_TO_TEXT"
+            statusCode: '200'
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
     post:
       responses:
-        "200":
-          description: "200 response"
+        '200':
+          description: 200 response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empty"
+                $ref: '#/components/schemas/Empty'
       x-amazon-apigateway-integration:
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri: "${function_arn}"
+        type: aws_proxy
+        httpMethod: POST
+        uri: '${function_arn}'
         responses:
           default:
-            statusCode: "200"
-        passthroughBehavior: "when_no_match"
-        contentHandling: "CONVERT_TO_TEXT"
-  /echo/{id}:
+            statusCode: '200'
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+  '/echo/{id}':
     get:
       parameters:
-      - name: "id"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
-        "200":
-          description: "200 response"
+        '200':
+          description: 200 response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empty"
-      x-amazon-apigateway-integration:
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri: "${function_arn}"
-        responses:
-          default:
-            statusCode: "200"
-        passthroughBehavior: "when_no_match"
-        contentHandling: "CONVERT_TO_TEXT"
+                $ref: '#/components/schemas/Empty'
     delete:
       parameters:
-      - name: "id"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
-        "200":
-          description: "200 response"
+        '200':
+          description: 200 response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empty"
-      x-amazon-apigateway-integration:
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri: "${function_arn}"
-        responses:
-          default:
-            statusCode: "200"
-        passthroughBehavior: "when_no_match"
-        contentHandling: "CONVERT_TO_TEXT"
+                $ref: '#/components/schemas/Empty'
 components:
   schemas:
     Empty:
-      title: "Empty Schema"
-      type: "object"
+      title: Empty Schema
+      type: object

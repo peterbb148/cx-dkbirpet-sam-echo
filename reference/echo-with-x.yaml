@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: echo
+  version: '1.0'
+  description: API to handle echos.
+  summary: API to handle echos.
+  contact:
+    name: Peter Birkholm-Buch
+    email: peterbb@gmail.com
+  license:
+    name: Free for all
+    identifier: Beerware
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /echo:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/echo'
+      operationId: get-echo
+      description: Get all echo messages
+      x-amazon-apigateway-integration:
+        uri: 'http://cadi.dev.be:2202/resources/translations/{proxy}'
+        httpMethod: ANY
+        responses:
+          default:
+            statusCode: '200'
+        requestParameters:
+          integration.request.path.proxy: method.request.path.proxy
+        passthroughBehavior: when_no_match
+        connectionType: VPC_LINK
+        connectionId: bdaqzv
+        cacheNamespace: 005uqx
+        cacheKeyParameters:
+          - method.request.path.proxy
+        type: http_proxy
+    post:
+      summary: ''
+      operationId: post-echo
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/echo'
+      description: Create a new echo message
+      x-amazon-apigateway-integration:
+        uri: 'http://cadi.dev.be:2202/resources/translations/{proxy}'
+        httpMethod: ANY
+        responses:
+          default:
+            statusCode: '200'
+        requestParameters:
+          integration.request.path.proxy: method.request.path.proxy
+        passthroughBehavior: when_no_match
+        connectionType: VPC_LINK
+        connectionId: bdaqzv
+        cacheNamespace: 005uqx
+        cacheKeyParameters:
+          - method.request.path.proxy
+        type: http_proxy
+  '/echo/{id}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/echo'
+        '':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/echo'
+      operationId: get-echo
+      description: Get specific echo message
+      x-amazon-apigateway-integration:
+        uri: 'http://cadi.dev.be:2202/resources/translations/{proxy}'
+        httpMethod: ANY
+        responses:
+          default:
+            statusCode: '200'
+        requestParameters:
+          integration.request.path.proxy: method.request.path.proxy
+        passthroughBehavior: when_no_match
+        connectionType: VPC_LINK
+        connectionId: bdaqzv
+        cacheNamespace: 005uqx
+        cacheKeyParameters:
+          - method.request.path.proxy
+        type: http_proxy
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    delete:
+      summary: ''
+      operationId: delete-echo-id
+      responses:
+        '200':
+          description: OK
+      description: Delete specific echo message
+      x-amazon-apigateway-integration:
+        uri: 'http://cadi.dev.be:2202/resources/translations/{proxy}'
+        httpMethod: ANY
+        responses:
+          default:
+            statusCode: '200'
+        requestParameters:
+          integration.request.path.proxy: method.request.path.proxy
+        passthroughBehavior: when_no_match
+        connectionType: VPC_LINK
+        connectionId: bdaqzv
+        cacheNamespace: 005uqx
+        cacheKeyParameters:
+          - method.request.path.proxy
+        type: http_proxy
+components:
+  schemas:
+    echo:
+      title: echo
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+      required:
+        - message
