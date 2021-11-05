@@ -1,0 +1,72 @@
+openapi: 3.0.0
+info:
+  title: echo-3.0
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /echo:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/echo'
+      operationId: get-echo
+      description: Get all the echo messages
+    post:
+      summary: ''
+      operationId: post-echo
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/echo'
+  '/echo/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/echo'
+      operationId: get-echo-id
+      description: Get a specific echo
+    delete:
+      summary: ''
+      operationId: delete-echo-id
+      responses:
+        '200':
+          description: OK
+      description: Delete echo message
+components:
+  schemas:
+    echo:
+      title: echo
+      type: object
+      description: Echo message
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+      required:
+        - message
