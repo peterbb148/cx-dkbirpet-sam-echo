@@ -20,6 +20,15 @@ paths:
                   $ref: '#/components/schemas/echo'
       operationId: get-echo
       description: Get all the echo messages
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: '${function_arn}'
+        responses:
+          default:
+            statusCode: '200'
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
     post:
       summary: ''
       operationId: post-echo
@@ -31,6 +40,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/echo'
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: '${function_arn}'
+        responses:
+          default:
+            statusCode: '200'
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
   '/echo/{id}':
     parameters:
       - schema:
@@ -50,6 +68,15 @@ paths:
                 $ref: '#/components/schemas/echo'
       operationId: get-echo-id
       description: Get a specific echo
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: '${function_arn}'
+        responses:
+          default:
+            statusCode: '200'
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
     delete:
       summary: ''
       operationId: delete-echo-id
@@ -57,6 +84,15 @@ paths:
         '200':
           description: OK
       description: Delete echo message
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: '${function_arn}'
+        responses:
+          default:
+            statusCode: '200'
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
 components:
   schemas:
     echo:
