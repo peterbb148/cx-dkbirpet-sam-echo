@@ -28,6 +28,21 @@ paths:
                   $ref: '#/components/schemas/echo'
       operationId: get-echo
       description: Get all echo messages
+      x-amazon-apigateway-integration:
+        uri: 'http://cadi.dev.be:2202/resources/translations/{proxy}'
+        httpMethod: ANY
+        responses:
+          default:
+            statusCode: '200'
+        requestParameters:
+          integration.request.path.proxy: method.request.path.proxy
+        passthroughBehavior: when_no_match
+        connectionType: VPC_LINK
+        connectionId: bdaqzv
+        cacheNamespace: 005uqx
+        cacheKeyParameters:
+          - method.request.path.proxy
+        type: http_proxy
     post:
       summary: ''
       operationId: post-echo
@@ -40,6 +55,21 @@ paths:
             schema:
               $ref: '#/components/schemas/echo'
       description: Create a new echo message
+      x-amazon-apigateway-integration:
+        uri: 'http://cadi.dev.be:2202/resources/translations/{proxy}'
+        httpMethod: ANY
+        responses:
+          default:
+            statusCode: '200'
+        requestParameters:
+          integration.request.path.proxy: method.request.path.proxy
+        passthroughBehavior: when_no_match
+        connectionType: VPC_LINK
+        connectionId: bdaqzv
+        cacheNamespace: 005uqx
+        cacheKeyParameters:
+          - method.request.path.proxy
+        type: http_proxy
   '/echo/{id}':
     get:
       summary: Your GET endpoint
@@ -58,6 +88,21 @@ paths:
                 $ref: '#/components/schemas/echo'
       operationId: get-echo
       description: Get specific echo message
+      x-amazon-apigateway-integration:
+        uri: 'http://cadi.dev.be:2202/resources/translations/{proxy}'
+        httpMethod: ANY
+        responses:
+          default:
+            statusCode: '200'
+        requestParameters:
+          integration.request.path.proxy: method.request.path.proxy
+        passthroughBehavior: when_no_match
+        connectionType: VPC_LINK
+        connectionId: bdaqzv
+        cacheNamespace: 005uqx
+        cacheKeyParameters:
+          - method.request.path.proxy
+        type: http_proxy
     parameters:
       - schema:
           type: string
@@ -71,6 +116,21 @@ paths:
         '200':
           description: OK
       description: Delete specific echo message
+      x-amazon-apigateway-integration:
+        uri: 'http://cadi.dev.be:2202/resources/translations/{proxy}'
+        httpMethod: ANY
+        responses:
+          default:
+            statusCode: '200'
+        requestParameters:
+          integration.request.path.proxy: method.request.path.proxy
+        passthroughBehavior: when_no_match
+        connectionType: VPC_LINK
+        connectionId: bdaqzv
+        cacheNamespace: 005uqx
+        cacheKeyParameters:
+          - method.request.path.proxy
+        type: http_proxy
 components:
   schemas:
     echo:
