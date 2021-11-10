@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "cx-dkbirpet-sam-echo"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-zradr4ixcp1x"
+s3_prefix = "cx-dkbirpet-sam-echo"
+region = "eu-west-1"
+profile = "sandbox"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

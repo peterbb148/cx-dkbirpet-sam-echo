@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.1
 info:
   title: echo-3.0
   version: '1.0'
@@ -21,8 +21,8 @@ paths:
       operationId: get-echo
       description: Get all the echo messages
       x-amazon-apigateway-integration:
+        httpMethod: GET
         type: aws_proxy
-        httpMethod: POST
         uri: '${function_arn}'
         responses:
           default:
@@ -70,7 +70,7 @@ paths:
       description: Get a specific echo
       x-amazon-apigateway-integration:
         type: aws_proxy
-        httpMethod: POST
+        httpMethod: GET
         uri: '${function_arn}'
         responses:
           default:
@@ -86,7 +86,7 @@ paths:
       description: Delete echo message
       x-amazon-apigateway-integration:
         type: aws_proxy
-        httpMethod: POST
+        httpMethod: DELETE
         uri: '${function_arn}'
         responses:
           default:
